@@ -1,0 +1,65 @@
+<style>
+  .channelListSection .listRow {
+    border: 1px solid black;
+    border-radius: 3mm;
+    padding: .7mm 3mm;
+    margin-top: .6mm;
+    font-size: 15px;
+    line-height: 4.5mm;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+  }
+
+  .channelListSection .listRow.titleRow {
+    font-weight: bold;
+    font-size: 18px;
+    border: none;
+  }
+
+  .channelListSection .listRow.highlighted {
+    background-color: #DDD !important;
+    print-color-adjust: exact;
+  }
+
+  .channelListSection .channelCol {
+    flex: 0 0 25mm;
+  }
+
+  .channelListSection .instrumentCol {
+    flex: 3 0 20mm;
+  }
+
+  .channelListSection .sourceCol {
+    flex: 2 0 20mm;
+  }
+
+  .channelListSection .phantomCol {
+    flex: 0 0 25mm;
+    text-align: center;
+  }
+
+  .channelListSection .standCol {
+    flex: 0 0 30mm;
+    text-align: center;
+  }
+</style>
+<div class="channelListSection">
+  <div class="listRow titleRow">
+    <p class="channelCol"><%= labels.channel_list_ch %></p>
+    <p class="instrumentCol"><%= labels.channel_list_instrument %></p>
+    <p class="sourceCol"><%= labels.channel_list_input %></p>
+    <p class="phantomCol"><%= labels.channel_list_phantom %></p>
+    <p class="standCol"><%= labels.channel_list_stand %></p>
+  </div>
+  <% section.content.rows.forEach((row, idx) => { %>
+    <div class=<%= `listRow ${row.is_highlighted ? "highlighted" : ""}` %>>
+      <p class="channelCol"><%= idx+1 %></p>
+      <p class="instrumentCol"><%= row.instrument %></p>
+      <p class="sourceCol"><%= row.input %></p>
+      <p class="phantomCol"><%= row.phantom ? "✓" : "" %></p>
+      <p class="standCol"><%= row.stand %></p>
+    </div>
+  <% }) %>
+</div>

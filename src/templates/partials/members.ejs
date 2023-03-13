@@ -1,0 +1,36 @@
+<style>
+  .membersSection {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .membersSection .profile {
+    font-size: 15px;
+    overflow: hidden;
+    margin: 2px;
+    text-align: center;
+    flex: 1 0 110px;
+  }
+
+  .membersSection .profile h1 {
+    font-size: 15px;
+  }
+
+  .membersSection .profile p {
+    font-size: 12px;
+  }
+
+  .membersSection .profile img {
+    width: 100%;
+  }
+</style>
+<div class="membersSection">
+  <% section.content.members.forEach(member => { %>
+    <div class="profile">
+      <!--<img src="profile.png" alt="">-->
+      <h1><%= member.name %></h1>
+      <p><%= member.roles %></p>
+    </div>
+  <% }) %>
+</div>

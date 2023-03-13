@@ -1,0 +1,64 @@
+<style>
+  .contactSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contactSection h1 {
+    font-size: 30px;
+  }
+
+  .contactSection .commonContact {
+    margin-bottom: 2mm;
+  }
+
+  .contactSection .profile {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 20px;
+    margin-top: 2mm;
+  }
+
+  .contactSection .role {
+    font-size: 12px;
+  }
+
+  .contactSection .nameCol {
+    flex: 1 0 50mm;
+    font-size: 16px;
+  }
+
+  .contactSection .phoneCol {
+    flex: 0 0 45mm;
+    text-align: center;
+    font-size: 18px;
+
+  }
+
+  .contactSection .emailCol {
+    text-align: right;
+    flex: 1 0 50mm;
+    font-size: 15px;
+  }
+
+  .contactSection .profile .title {
+    font-size: 14px;
+  }
+</style>
+<div class="contactSection">
+  <p class="commonContact"><%= section.content.common_contact ?? "---" %></p>
+  <% section.content.named_contacts.forEach(contact => { %>
+    <div class="profile">
+      <div class="nameCol">
+        <p class="name"><%= contact.name %></p>
+        <p class="role"><%= contact.role %></p>
+      </div>
+      <p class="phoneCol"><%= contact.phone %></p>
+      <p class="emailCol"><%= contact.email %></p>
+    </div>
+  <% }) %>
+</div>

@@ -1,0 +1,68 @@
+<style>
+  .bandOverviewSection {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  
+  .bandOverviewSection .overviewTitle {
+    font-size: 24px;
+    flex: 0 0 7mm;
+    overflow: hidden;
+    writing-mode: vertical-lr;
+    text-align: center;
+    padding-right: 1mm;
+  }
+
+  .bandOverviewSection .overviewListArea {
+    flex: 1 0 20mm;
+  }
+
+  .bandOverviewSection .listRow {
+    border: 1px solid black;
+    border-radius: 3mm;
+    padding: .7mm 3mm;
+    margin-top: .6mm;
+    font-size: 15px;
+    line-height: 4.5mm;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+  }
+
+  .bandOverviewSection .listRow.titleRow {
+    font-weight: bold;
+    font-size: 18px;
+    border: none;
+  }
+
+  .bandOverviewSection .groupCol {
+    flex: 0 0 40mm;
+  }
+
+  .bandOverviewSection .playerCol {
+    flex: 0 0 35mm;
+  }
+
+  .bandOverviewSection .requestsCol {
+    flex: 1 0 25mm;
+  }
+</style>
+<div class="bandOverviewSection">
+  <h1 class="overviewTitle"><%= section.title %></h1>
+  <div class="overviewListArea">
+    <div class="listRow titleRow">
+      <p class="groupCol"><%= labels.monitoring_group %></p>
+      <p class="playerCol"><%= labels.monitoring_player %></p>
+      <p class="requestsCol"><%= labels.monitoring_mix %></p>
+    </div>
+    <% section.content.rows.forEach((row, idx) => { %>
+      <div class="listRow">
+        <p class="groupCol"><%= idx+1 %></p>
+        <p class="playerCol"><%= row.player %></p>
+        <p class="requestsCol"><%= row.mix %></p>
+      </div>
+    <% }) %>
+  </div>
+</div>

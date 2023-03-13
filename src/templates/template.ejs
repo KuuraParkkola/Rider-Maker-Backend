@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Verdana';
+    }
+
+    .page {
+      position: relative;
+      width: <%= document.page.width %>;
+      height: <%= document.page.height %>;
+      border: 1px lightgray solid;
+      display: flex;
+      flex-direction: column;
+      justify-content: stretch;
+      align-items: stretch;
+    }
+
+    .pageHeader {
+      flex: 0 0 <%= document.page.margins.top %>;
+      overflow: hidden;
+      text-align: right;
+      padding-bottom: 1mm;
+      display: flex;
+      flex-direction: column;
+      align-items: right;
+      justify-content: flex-end;
+      margin: 0 <%= document.page.margins.side %>;
+    }
+
+    .pageHeader .line1 {
+      font-weight: normal;
+      font-size: 21px;
+      line-height: 5mm;
+      margin: 0;
+    }
+
+    .pageHeader .line2 {
+      font-weight: normal;
+      font-size: 28px;
+      margin: 0;
+    }
+
+    .pageHeader .band {
+      font-weight: bold;
+    }
+
+    .pageFooter {
+      flex: 0 0 <%= document.page.margins.bottom %>;
+      overflow: hidden;
+      margin: 0 <%= document.page.margins.side %>;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .pageFooter .textContent {
+      font-size: 10px;
+      width: 130mm;
+      text-align: right;
+    }
+
+    .pageFooter .pageNumber {
+      flex-basis: 12mm;
+      text-align: right;
+      margin-left: 2mm;
+    }
+
+    .pageContent {
+      overflow: hidden;
+      flex: 1 0 100mm;
+      margin: 0 <%= document.page.margins.side %>;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .section {
+      margin-top: 4.5mm;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .section .sectionTitle {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: .8mm;
+    }
+
+    .section .sectionDisclaimer {
+      width: 140mm;
+      text-align: center;
+      font-size: 12px;
+      align-self: center;
+    }
+  </style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= document.band %> <%= document.title %> <%= document.revision %></title>
+  </head>
+  <body>
+
+    <%# Iterated over each page as defined in the configuration file %>
+    <% content.forEach((page, pagenum) => { %>
+      <div class="page">
+        <div class="pageHeader">
+          <%# Create header on all pages except the first one %>
+          <% if (pagenum) { %>
+            <h2 class="line1"><%= document.title %></h2>
+            <h1 class="line2"><span class="band"><%= document.band %></span> <%= document.revision %></h1>
+          <% } %>
+        </div>
+
+        <!-- ----- ----- ----- ----- ----- ----- ----- ----- -->
+        
+        <div class="pageContent">
+          <%# Iterate over all the sections defined for this page %>
+          <% page.forEach(section => { %>
+            <div class="section">
+              <%# Choose the section type to render %>
+              <% switch (section.section) {
+
+              /** An overview table with player names, their instruments, channel counts and additional notes */
+              case 'band_overview': %>
+                <!-- ----- ----- Render band overview area ----- ----- -->
+                <%- include("./partials/band_overview.ejs", { section, labels, resources }) %>
+                <% break %>
+
+              <%# A list of channels, instruments and equipment for each audio channel used %>
+              <% case 'channel_list': %>
+                <!-- ----- ----- Render channel list area ----- ----- -->
+                <% if (section.title) { %>
+                  <h1 class="sectionTitle"><%= section.title %></h1>
+                <% } %>
+                <% if (section.description) { %>
+                  <p class="sectionDisclaimer"><%= section.description %></p>
+                <% } %>
+                <%- include("./partials/channel_list.ejs", { section, labels, resources }) %>
+                <% break %>
+
+              <%# A section with the contacts (name, phone number and email) for the band %>
+              <% case 'contacts': %>
+                <!-- ----- ----- Render contacts area ----- ----- -->
+                <% if (section.title) { %>
+                  <h1 class="sectionTitle"><%= section.title %></h1>
+                <% } %>
+                <% if (section.description) { %>
+                  <p class="sectionDisclaimer"><%= section.description %></p>
+                <% } %>
+                <%- include("./partials/contacts.ejs", { section, labels, resources }) %>
+                <% break %>
+
+              <%# An equipment list table where the item and a count of the item can be specified. Elements can be grouped and highlighted %>
+              <% case 'equipment_list': %>
+                <!-- ----- ----- Render equipment needs area ----- ----- -->
+                <% if (section.title) { %>
+                  <h1 class="sectionTitle"><%= section.title %></h1>
+                <% } %>
+                <% if (section.description) { %>
+                  <p class="sectionDisclaimer"><%= section.description %></p>
+                <% } %>
+                <%- include("./partials/equipment_list.ejs", { section, labels, resources }) %>
+                <% break %>
+
+              <%# A section with the names of the band members and their roles in the band %>
+              <% case 'members': %>
+                <!-- ----- ----- Render members area ----- ----- -->
+                <% if (section.title) { %>
+                  <h1 class="sectionTitle"><%= section.title %></h1>
+                <% } %>
+                <% if (section.description) { %>
+                  <p class="sectionDisclaimer"><%= section.description %></p>
+                <% } %>
+                <%- include("./partials/members.ejs", { section, labels, resources }) %>
+                <% break %>
+
+              <%# An overview table for monitor requirements with monitor groups, players and monitoring wishes %>
+              <% case 'monitoring': %>
+                <!-- ----- ----- Render monitoring area ----- ----- -->
+                <%- include("./partials/monitoring.ejs", { section, labels, resources }) %>
+                <% break %>
+
+              <%# Written requirements. A number of paragraphs with a title and a description %>
+              <% case 'requirements': %>
+                <!-- ----- ----- Render requirements area ----- ----- -->
+                <% if (section.title) { %>
+                  <h1 class="sectionTitle"><%= section.title %></h1>
+                <% } %>
+                <% if (section.description) { %>
+                  <p class="sectionDisclaimer"><%= section.description %></p>
+                <% } %>
+                <%- include("./partials/requirements.ejs", { section, labels, resources }) %>
+                <% break %>
+
+              <%# A picture of the band's stage plan %>
+              <% case 'stage_plan': %>
+                <!-- ----- ----- Render stage plan area ----- ----- -->
+                <% if (section.title) { %>
+                  <h1 class="sectionTitle"><%= section.title %></h1>
+                <% } %>
+                <% if (section.description) { %>
+                  <p class="sectionDisclaimer"><%= section.description %></p>
+                <% } %>
+                <%- include("./partials/stage_plan.ejs", { section, labels, resources }) %>
+                <% break %>
+                
+              <%# A title section with the name of the document and the band, and social media handles %>
+              <% case 'title_section': %>
+                <!-- ----- ----- Render title area ----- ----- -->
+                <%- include("./partials/title_area.ejs", { section, labels, resources }) %>
+                <% break %>
+
+              <% default: %>
+                <% break %>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+        
+        <!-- ----- ----- ----- ----- ----- ----- ----- ----- -->
+        
+        <%# Render a footer with a text field and page numbers %>
+        <div class="pageFooter">
+          <div class="textContent">
+            <p><%= document.footer_text %></p>
+          </div>
+          <div class="pageNumber">
+            <p><%= pagenum+1 %> (<%= content.length %>)</p>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+    </div>
+  </body>
+</html>

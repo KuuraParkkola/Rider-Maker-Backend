@@ -1,0 +1,23 @@
+<style>
+  .requirementsSection .requirement {
+    margin-top: 5mm;
+  }
+
+  .requirementsSection .requirement h1 {
+    text-align: center;
+    font-size: 22px;
+  }
+
+  .requirementsSection .requirement p {
+    margin-top: 1mm;
+    font-size: 14px;
+  }
+</style>
+<div class="requirementsSection">
+  <% section.content.requirements.forEach(requirement => { %>
+    <div class="requirement">
+      <h1><%= requirement.title %></h1>
+      <p><%= requirement.content %></p>
+    </div>
+  <% }) %>
+</div> 
