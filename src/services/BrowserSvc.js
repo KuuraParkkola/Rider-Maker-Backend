@@ -17,6 +17,9 @@ const watchdogSvc = async () => {
 const startBrowser = async () => {
     const puppeteer_config = {
         headless: true,
+        args: [
+            '--no-sandbox'
+        ]
     }
     const exePath = process.env.CHROME_BIN;
     if (exePath) {
