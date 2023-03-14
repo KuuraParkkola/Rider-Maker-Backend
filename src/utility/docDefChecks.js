@@ -57,7 +57,7 @@ const validateBandOverview = (section_content) => {
             return {
                 name: String(row.name),
                 instrument: String(row.instrument),
-                channels: /^\d+$/.test(row.channels) ? row.channels : '',
+                channels: /^\d*$/.test(row.channels) ? row.channels : '',
                 notes: String(row.notes),
             }
         } catch (err) {
@@ -66,7 +66,7 @@ const validateBandOverview = (section_content) => {
     }
 
     return {
-        rows: (section_content?.rows, []).map( validateRow ).filter( row => row !== undefined )
+        rows: (section_content?.rows ?? []).map( validateRow ).filter( row => row !== undefined )
     };
 }
 
