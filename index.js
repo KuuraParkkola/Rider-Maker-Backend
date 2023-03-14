@@ -5,7 +5,7 @@ const cors = require("@koa/cors");
 const serve = require('koa-static');
 const Router = require('koa-router');
 const { prepareDocumentDefinition } = require('./src/utility/docDefChecks');
-const { startBrowser, stopBrowser } = require('./src/services/BrowserSvc');
+const { startBrowser, stopBrowser, getBrowser } = require('./src/services/BrowserSvc');
 const { loadResources, getResources } = require('./src/services/ResourceSvc');
 
 
@@ -29,7 +29,7 @@ router.post('/renderpdf', async (ctx) => {
     const documentDef = prepareDocumentDefinition(ctx.request.body);
     const renderedTemplate = await ejs.renderFile("./src/templates/template.ejs", { ...documentDef, resources: getResources() });
 
-    const browserPage = await browser.newPage();
+    const browserPage = await getBrowser().newPage();
     await browserPage.setContent(renderedTemplate);
     const pdf = await browserPage.pdf({ format: 'a4', printBackground: true });
     await browserPage.close();

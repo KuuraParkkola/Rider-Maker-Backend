@@ -5,16 +5,7 @@ let is_running = false;
 let browser;
 let watchdog;
 
-const watchdogSvc = async () => {
-    if (!browser.isConnected) {
-        console.log("Browser Watchdog: Browser has been disconnected. Relaunching...");
-        browser = await browser.close();
-        browser = await puppeteer.launch();
-        console.log("Browser Watchdog: Browser relaunched");
-    }
-}
-
-const startBrowser = async () => {
+const buildConfiguration = () => {
     const puppeteer_config = {
         headless: true,
         args: [
@@ -25,8 +16,19 @@ const startBrowser = async () => {
     if (exePath) {
         puppeteer_config['executablePath'] = exePath;
     }
+}
 
-    browser = await puppeteer.launch(puppeteer_config);
+const watchdogSvc = async () => {
+    if (!browser.isConnected) {
+        console.log("Browser Watchdog: Browser has been disconnected. Relaunching...");
+        browser = await browser.close();
+        browser = await puppeteer.launch(buildConfiguration());
+        console.log("Browser Watchdog: Browser relaunched");
+    }
+}
+
+const startBrowser = async () => {
+    browser = await puppeteer.launch(buildConfiguration());
     watchdog = setInterval(watchdogSvc, 1000);
     is_running = true;
     console.log("Browser Watchdog: Browser started");
@@ -43,9 +45,12 @@ const isRunning = () => {
     return is_running();
 }
 
+const getBrowser = () => browser;
+
 
 module.exports = {
     isRunning,
+    getBrowser,
     startBrowser,
     stopBrowser,
 }
