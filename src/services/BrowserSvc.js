@@ -9,13 +9,16 @@ const buildConfiguration = () => {
     const puppeteer_config = {
         headless: true,
         args: [
-            '--no-sandbox'
+            '--no-sandbox',
+            '--disable-gpu',
         ]
     }
     const exePath = process.env.CHROME_BIN;
     if (exePath) {
         puppeteer_config['executablePath'] = exePath;
     }
+
+    return puppeteer_config;
 }
 
 const watchdogSvc = async () => {
