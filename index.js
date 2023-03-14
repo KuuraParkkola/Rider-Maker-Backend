@@ -2,6 +2,7 @@ const ejs = require('ejs');
 const Koa = require('koa');
 const parser = require('koa-bodyparser');
 const cors = require("@koa/cors");
+const serve = require('koa-static');
 const Router = require('koa-router');
 const { prepareDocumentDefinition } = require('./src/utility/docDefChecks');
 const { startBrowser, stopBrowser } = require('./src/services/BrowserSvc');
@@ -43,6 +44,7 @@ init();
 app
     .use(parser())
     .use(cors())
+    .use(serve('/static'))
     .use(router.routes())
     .listen(8000, () => {
         console.log("Service active");
