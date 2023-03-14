@@ -8,6 +8,7 @@
     "start": "node index.js"
   },
   "devDependencies": {
+    "crossenv": "^0.0.2-security",
     "nodemon": "^2.0.21"
   },
   "dependencies": {

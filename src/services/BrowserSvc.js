@@ -15,7 +15,15 @@ const watchdogSvc = async () => {
 }
 
 const startBrowser = async () => {
-    browser = await puppeteer.launch({ headless: true });
+    const puppeteer_config = {
+        headless: true,
+    }
+    const exePath = process.env.CHROME_BIN;
+    if (exePath) {
+        puppeteer_config['executablePath'] = exePath;
+    }
+
+    browser = await puppeteer.launch(puppeteer_config);
     watchdog = setInterval(watchdogSvc, 1000);
     is_running = true;
     console.log("Browser Watchdog: Browser started");
