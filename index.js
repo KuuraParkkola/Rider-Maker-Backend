@@ -44,7 +44,7 @@ init();
 app
     .use(parser())
     .use(cors())
-    .use(serve('/static'))
+    .use(serve('static'))
     .use(router.routes())
     .listen(8000, () => {
         console.log("Service active");
